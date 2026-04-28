@@ -1,0 +1,40 @@
+[
+  {
+    "id": "doona-carseat-stroller-001",
+    "product_name": "Doona Infant Car Seat & Stroller",
+    "brand": "Doona",
+    "category": "Travel Systems",
+    "price": 550,
+    "currency": "USD",
+    "technical_specs": {
+      "dimensions_folded": "23.6 x 17.3 x 26.0 inches",
+      "dimensions_open": "39.0 x 17.3 x 32.2 inches",
+      "weight_kg": 7.5,
+      "age_range": "0-15 months",
+      "max_weight": "13 kg (28.6 lbs)",
+      "materials": "Bamboo charcoal fiber inner fabric, BPA-free plastics, aluminum frame",
+      "harness_type": "5-point harness"
+    },
+    "compatibility": {
+      "cars_supported_examples": ["Nissan Patrol", "Toyota Land Cruiser", "Honda CR-V", "Volkswagen Golf", "Audi Q7"],
+      "isofix_support": true,
+      "airplane_friendly": true
+    },
+    "climate_notes": "The breathable bamboo charcoal insert helps regulate temperature. Suitable for Dubai summer heat if used with the optional UPF 50+ sunshade, but do not leave inside a parked car.",
+    "safety_notes": "Anti-rebound bar crash technology. Failsafe mechanisms to prevent unintentional folding. Side impact protection.",
+    "manual_snippets": [
+      "Ensure the handle is in the anti-rebound position when installed in a vehicle.",
+      "To transform from stroller to car seat, squeeze the handle button and push the wheels up until they click.",
+      "The car seat can be installed with or without the ISOFIX base using a 3-point vehicle seat belt.",
+      "Do not add any aftermarket padding or inserts under the child.",
+      "Always ensure the harness is snug, allowing only one finger to fit between the strap and the child's collarbone."
+    ],
+    "customer_reviews": [
+      "Absolutely perfect for travel. Fit perfectly in our Nissan Patrol and was a breeze to navigate through Dubai airport.",
+      "Love the convenience, but it is a bit heavy (7.5kg) to carry if you are walking up stairs.",
+      "We took it on Emirates airline and it fit in the cabin just fine. Made the flight with our newborn so much easier.",
+      "In the UAE summer heat, the baby does get a little sweaty, but the sun canopy is huge and offers great shade.",
+      "Very safe and sturdy. The ISOFIX base clicks in securely. Definitely worth the price for the convenience of not carrying a separate stroller."
+    ]
+  }
+]
