@@ -87,7 +87,7 @@ export default function AiChatWidget({ productId, productName }) {
         </div>
       </div>
 
-      {/* Messages Area */}
+      {/* Messaes Area */}
       <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-6 bg-[#FAF8F5] z-10 relative scroll-smooth">
 
         {messages.length === 1 && (
@@ -124,7 +124,7 @@ export default function AiChatWidget({ productId, productName }) {
             );
           }
 
-          // AI Message
+          // AI Mesage
           const isDanger = msg.safety_flag;
           const isError = msg.type === 'error';
           const cardBorder = isDanger ? 'border-red-400 bg-red-50' : isError ? 'border-amber-400 bg-amber-50' : 'border-premium-100 bg-white';
@@ -134,7 +134,7 @@ export default function AiChatWidget({ productId, productName }) {
               <div className="flex flex-col items-start w-full">
                 <div className={`max-w-[95%] border ${cardBorder} shadow-sm rounded-3xl rounded-tl-sm p-5 flex flex-col gap-4 relative overflow-hidden`}>
 
-                  {/* Warning Alert */}
+                  {/*Warning Alert */}
                   {isDanger && (
                     <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider mb-2 bg-red-500 p-3 rounded-lg shadow-sm border border-red-600">
                       <AlertTriangle className="w-5 h-5" /> SAFETY WARNING
@@ -245,7 +245,7 @@ export default function AiChatWidget({ productId, productName }) {
         </div>
       </form>
 
-      {/* Decorative background blob */}
+      {/* Decorative bg blob */}
       <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-[#fceeee] rounded-full blur-[80px] opacity-70 z-0 pointer-events-none"></div>
     </div>
   );
