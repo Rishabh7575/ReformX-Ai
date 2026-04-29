@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle, AlertTriangle, ChevronDown, ChevronUp, Star, ShieldCheck, Heart, PlaneTakeoff, Truck } from 'lucide-react';
+import { useCart } from '../context/CartContext';
 
 export default function ProductDetails({ product }) {
   const { t } = useTranslation();
+  const { addToCart } = useCart();
 
   const [openSections, setOpenSections] = useState({
     whyLove: true,
@@ -66,7 +68,10 @@ export default function ProductDetails({ product }) {
             </div>
           </div>
 
-          <button className="btn-primary w-full md:w-auto text-lg py-4 shadow-xl shadow-[#d99c9c]/20">
+          <button 
+            onClick={() => addToCart(product)}
+            className="btn-primary w-full md:w-auto text-lg py-4 shadow-xl shadow-[#d99c9c]/20 hover:scale-105 transition-transform"
+          >
             Add to Cart
           </button>
         </div>
@@ -86,7 +91,7 @@ export default function ProductDetails({ product }) {
           </button>
           {openSections.whyLove && (
             <div className="py-6 text-premium-700 leading-relaxed animate-fade-in">
-              <p className="mb-4">Designed for modern parents on the go, this seamless system transitions from car seat to stroller in seconds. It eliminates the need to carry an extra stroller in your trunk, making quick trips to the supermarket or navigating busy airports completely effortless.</p>
+              <p className="mb-4">{product.short_description}</p>
             </div>
           )}
         </div>

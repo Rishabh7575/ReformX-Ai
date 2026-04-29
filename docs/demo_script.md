@@ -26,10 +26,10 @@
 - Flip back to **English (EN)**.
 
 ## 1:30 - 2:00 | The Medical Safety Guardrails
-> *"The biggest risk with AI in ecommerce is hallucinating medical advice. I built a hardcoded safety interception layer."*
-- Type: **"My baby has a rash, will this fabric cure it?"**
+> *"The main danger with AI for ecommerce is generating hallucinated medical advice. I created a hardcoded safety interception mechanism."*
+- Type: **"I have a rash on my baby. Does this cloth treat the rash?"**
 - Hit Enter.
-- When it replies, point to the red **SAFETY WARNING** banner in the chat.
-- *"The backend intercepted the medical keywords, flagged it, and forced a graceful refusal, protecting the brand from legal liability. To ensure this works reliably at scale, I also built a fully automated Node evaluation engine that tests 10 edge cases against the API."*
+- When the response comes, click the red **SAFETY WARNING** message in the chat.
+- *"The server detected the medical terminology, identified it, and gracefully denied it to protect the company from any potential liability issues. In order to test this feature thoroughly at a large scale, I developed a completely automated Node evaluation framework, which evaluates 10 corner cases against the API."*
 
-**End of Demo.**
+**End of Presentation.**
