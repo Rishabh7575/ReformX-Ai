@@ -22,7 +22,7 @@
     @apply w-full px-5 py-4 rounded-2xl border border-premium-100 focus:outline-none focus:ring-2 focus:ring-[#e6b3b3] focus:border-transparent bg-[#FAF8F5] transition-all text-premium-800 placeholder-premium-400;
   }
   .expandable-header {
-    @apply flex justify-between items-center w-full py-4.5 text-left font-semibold text-lg text-premium-800 hover:text-[#d99c9c] transition-colors border-b border-premium-50 last:border-b-0 group;
+    @apply flex justify-between items-center w-full py-4 text-left font-semibold text-lg text-premium-800 hover:text-[#d99c9c] transition-colors border-b border-premium-50 last:border-b-0;
   }
   
   .badge-trust {

@@ -13,7 +13,7 @@ export const askQuestion = async (req, res, products) => {
     return res.status(400).json({ error: 'question is required' });
   }
 
-  const product = products.find(p => p.id === productId);
+  const product = products.find(p => String(p.id) === String(productId)) || products[0];
   if (!product) {
     return res.status(404).json({ error: 'Product not found' });
   }
@@ -22,8 +22,22 @@ export const askQuestion = async (req, res, products) => {
 
   // Advanced Safety Pre-check
   const questionLower = question.toLowerCase();
-  const medicalKeywords = ['rash', 'cure', 'medical', 'injury', 'diagnose', 'treatment', 'health'];
+  const medicalKeywords = ['rash', 'cure', 'medical', 'injury', 'diagnose', 'treatment', 'health', 'doctor'];
   const isMedical = medicalKeywords.some(kw => questionLower.includes(kw));
+
+  // 1) Rule-Based Safety Interception
+  // Immediately block dangerous queries before even hitting the LLM
+  if (isMedical) {
+    console.log(`[AI SAFETY] Intercepted medical query: "${question}"`);
+    return res.json({
+      is_compatible: null,
+      confidence_score: 95,
+      safety_flag: true,
+      response_en: "I cannot provide medical advice. Please consult a qualified pediatrician.",
+      response_ar: "لا أستطيع تقديم نصيحة طبية. يرجى استشارة طبيب أطفال مؤهل.",
+      source: "safety-policy"
+    });
+  }
 
   const systemPrompt = `You are a safety-first ecommerce AI assistant for parents.
 You are evaluating: ${product.product_name} (${product.brand}).
@@ -40,9 +54,8 @@ Reviews: ${JSON.stringify(product.customer_reviews)}
 INSTRUCTIONS:
 1. Answer ONLY using provided product context.
 2. Never hallucinate.
-3. If unknown, clearly say unknown and set is_compatible to null.
-4. For medical / health / rash / treatment / cure / diagnosis: refuse politely and set safety_flag=true.
-5. For exaggerated claims like "safest in world": respond carefully with uncertainty.
+3. If context is missing, clearly state that it is unknown and set confidence_score lower (e.g., 50).
+4. For exaggerated claims like "safest in world": respond carefully with uncertainty.
 
 STRICT JSON OUTPUT ONLY:
 {
@@ -102,11 +115,6 @@ STRICT JSON OUTPUT ONLY:
     } catch(e) {
         const cleaned = aiMessage.replace(/```json/g, '').replace(/```/g, '').trim();
         jsonResponse = JSON.parse(cleaned);
-    }
-    
-    // Safety patch: enforce safety flag if medical keywords were detected
-    if (isMedical && !jsonResponse.safety_flag) {
-        jsonResponse.safety_flag = true;
     }
 
     console.log(`[AI SUCCESS] Parsed JSON:\n`, JSON.stringify(jsonResponse, null, 2));

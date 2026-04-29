@@ -21,18 +21,18 @@ export default function ProductDetails({ product }) {
     <div className="flex flex-col gap-10 animate-fade-in">
       {/* Hero Section */}
       <div className="flex flex-col md:flex-row gap-10">
-        {/* Product Image Placeholder */}
+        {/* Product Image */}
         <div className="w-full md:w-1/2">
-          <div className="bg-white rounded-[2rem] aspect-[4/5] flex items-center justify-center shadow-sm border border-premium-100 p-8 relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#fceeee]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-            <div className="text-premium-300 font-medium text-center border-2 border-dashed border-premium-200 rounded-2xl w-full h-full flex items-center justify-center relative z-10 transition-transform duration-500 group-hover:scale-[1.02]">
-              <div className="flex flex-col items-center gap-4">
-                <div className="w-20 h-20 bg-premium-100 rounded-full flex items-center justify-center">
-                  <Star className="w-8 h-8 text-premium-300" />
-                </div>
-                <p className="tracking-widest uppercase text-sm">[ High Quality <br /> {product.brand} Showcase ]</p>
-              </div>
-            </div>
+          <div className="bg-white rounded-[2rem] aspect-[4/5] flex items-center justify-center shadow-sm border border-premium-100 relative overflow-hidden group">
+            {/* Subtle hover overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#fceeee]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 pointer-events-none"></div>
+
+            {/* Real Product Image */}
+            <img
+              src={product.image_url || "https://imgs.search.brave.com/E09dh23zZVf4ffldAj9iqF2xbkofv0GSWQ0NIUDePqM/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/ZXZlbmZsby5jb20v/Y2RuL3Nob3AvZmls/ZXMvc3hpZ3c4ZjVh/a25laG5ubWFmdmUu/anBnP3Y9MTc2MTA3/OTgwOCZ3aWR0aD01/MzM"}
+              alt={product.product_name}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+            />
           </div>
         </div>
 
@@ -74,7 +74,7 @@ export default function ProductDetails({ product }) {
 
       {/* Accordions */}
       <div className="card p-8 lg:p-10">
-        
+
         {/* Why Parents Love It */}
         <div>
           <button onClick={() => toggleSection('whyLove')} className="expandable-header">

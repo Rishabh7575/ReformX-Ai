@@ -56,6 +56,15 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
+app.get('/api/products', (req, res) => {
+  try {
+    const data = fs.readFileSync(productDataPath, 'utf8');
+    res.json(JSON.parse(data));
+  } catch (error) {
+    res.json(products);
+  }
+});
+
 app.get('/api/product', (req, res) => {
   if (products.length > 0) {
     res.json(products[0]);
@@ -86,7 +95,7 @@ app.post('/api/ask', (req, res) => {
   if (question.length > 500) {
     question = question.substring(0, 500);
   }
-  
+
   req.body.question = question; // Update the req body with trimmed question
   askQuestion(req, res, products);
 });
@@ -94,7 +103,7 @@ app.post('/api/ask', (req, res) => {
 // Global Error Handler for fallbacks
 app.use((err, req, res, next) => {
   console.error("Server Error:", err.message);
-  
+
   // Fallback safe response if model or server fails
   res.status(err.status || 500).json({
     is_compatible: null,

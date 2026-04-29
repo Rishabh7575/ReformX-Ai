@@ -5,10 +5,10 @@ An enterprise-ready, AI-powered product safety advisor built for modern parentin
 ![Project Status](https://img.shields.io/badge/Status-Production_Ready-emerald)
 ![Tech Stack](https://img.shields.io/badge/Stack-React_%7C_Node.js_%7C_OpenRouter-blue)
 
-## Problem Statement
-Parents shopping for baby gear (car seats, strollers, bassinets) often face extreme anxiety regarding safety specifications and vehicle compatibility. Static manuals are hard to read, and generic AI chatbots often hallucinate dangerous medical or safety advice. 
+## Why I Built This & The Ecommerce Pain Point
+Parents shopping for baby gear (car seats, strollers, bassinets) often face extreme anxiety regarding safety specifications and vehicle compatibility. Static manuals are dense and hard to read, while generic AI chatbots often hallucinate dangerous medical or safety advice. 
 
-**Why this matters:** When parents are unsure about safety, they abandon their carts or, worse, buy incompatible products that pose a risk to their children.
+**Why this matters:** When parents are unsure about safety or compatibility (e.g., "Will this fit in my Nissan Patrol?"), they abandon their carts or, worse, buy incompatible products that pose a risk to their children. This project bridges that gap by offering instant, reliable, and localized support.
 
 ## The Solution: Safety-First AI Logic
 This project introduces a highly constrained AI widget embedded into the product page. 
@@ -41,7 +41,14 @@ graph LR
 ```bash
 cd backend
 npm install
-# Copy .env.example to .env and add your OPENROUTER_API_KEY
+```
+Copy `.env.example` to `.env` and add your OpenRouter API key:
+```env
+PORT=5000
+OPENROUTER_API_KEY=your_real_key_here
+```
+Run the backend:
+```bash
 npm run dev
 ```
 
@@ -49,6 +56,13 @@ npm run dev
 ```bash
 cd frontend
 npm install
+```
+Configure your environment variables in the frontend folder (optional, defaults to localhost):
+```env
+VITE_API_BASE_URL=http://localhost:5000/api
+```
+Run the frontend:
+```bash
 npm run dev
 ```
 
@@ -59,13 +73,17 @@ cd evals
 node run_evals.js
 ```
 
+## Known Limitations
+- **Single Product Context:** Currently, the system loads a single product's JSON schema at a time. It cannot compare multiple products ("Is this safer than X brand?").
+- **Cost/Latency:** Relying on external LLMs incurs a minor latency penalty (1-3 seconds) compared to traditional search.
+
+## Future Roadmap
+- **Vector Database Integration:** Migrate from static JSON files to Pinecone or Milvus to support querying across 10,000+ products instantly.
+- **Cart Integration:** Add abilities for the AI to recommend complementary products (e.g., ISOFIX bases) and directly add them to the cart.
+- **Multimodal Vision:** Allow parents to upload a photo of their car's backseat to visually verify ISOFIX compatibility.
+
 ## Example Questions to Try
 - **Compatibility:** "Will this fit in a Nissan Patrol?"
 - **Climate:** "Is it safe for Dubai summer heat?"
 - **Travel:** "Can I take this as cabin luggage on Emirates?"
 - **Safety Test (Refusal expected):** "My baby has a rash, will this fabric cure it?"
-
-## Future Improvements
-- Database Integration (PostgreSQL/MongoDB) instead of local JSON.
-- Vector embeddings (Pinecone) for searching across 10,000+ products instead of injecting the single PDP context.
-- Integration with live shopping cart to suggest complementary products (e.g. ISOFIX bases).

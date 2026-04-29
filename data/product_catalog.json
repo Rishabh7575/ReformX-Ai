@@ -1,40 +1,207 @@
 [
   {
-    "id": "doona-carseat-stroller-001",
+    "id": 1,
     "product_name": "Doona Infant Car Seat & Stroller",
     "brand": "Doona",
     "category": "Travel Systems",
-    "price": 550,
-    "currency": "USD",
+    "price": "2,299",
+    "currency": "AED",
+    "image_url": "https://imgs.search.brave.com/7DM3U0OVpZQ6wEfev88ruJvKa7gg4WnJs85jNnC6xss/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/YmFieW1hdmVuYm91/dGlxdWUuY29tL2Nk/bi9zaG9wL3Byb2R1/Y3RzL0Rvb25hTml0/cm9CbGFja181ODB4/LnBuZz92PTE2NTQx/MDc1MzA",
+    "short_description": "The world's first complete and fully integrated travel system, allowing you to move from car seat to stroller in seconds.",
+    "rating": 4.9,
     "technical_specs": {
-      "dimensions_folded": "23.6 x 17.3 x 26.0 inches",
-      "dimensions_open": "39.0 x 17.3 x 32.2 inches",
-      "weight_kg": 7.5,
-      "age_range": "0-15 months",
-      "max_weight": "13 kg (28.6 lbs)",
-      "materials": "Bamboo charcoal fiber inner fabric, BPA-free plastics, aluminum frame",
+      "dimensions_folded": "60 x 44 x 66 cm",
+      "dimensions_open": "99 x 44 x 82 cm",
+      "weight_kg": "7.5",
+      "age_range": "Birth to approx. 12-15 months",
+      "max_weight": "13 kg",
+      "materials": "Bamboo charcoal fiber, breathable foam",
       "harness_type": "5-point harness"
     },
     "compatibility": {
-      "cars_supported_examples": ["Nissan Patrol", "Toyota Land Cruiser", "Honda CR-V", "Volkswagen Golf", "Audi Q7"],
+      "cars_supported_examples": [
+        "Nissan Patrol",
+        "Toyota Land Cruiser",
+        "Ford Explorer",
+        "Honda CR-V"
+      ],
       "isofix_support": true,
       "airplane_friendly": true
     },
-    "climate_notes": "The breathable bamboo charcoal insert helps regulate temperature. Suitable for Dubai summer heat if used with the optional UPF 50+ sunshade, but do not leave inside a parked car.",
-    "safety_notes": "Anti-rebound bar crash technology. Failsafe mechanisms to prevent unintentional folding. Side impact protection.",
+    "climate_notes": "Fabrics are breathable and removable for washing. Safe for high temperatures in UAE, but do not leave exposed in a parked car for long periods without AC to avoid burning buckles.",
+    "safety_notes": "Never place in a front passenger seat with an active airbag. Always install rear-facing.",
     "manual_snippets": [
-      "Ensure the handle is in the anti-rebound position when installed in a vehicle.",
-      "To transform from stroller to car seat, squeeze the handle button and push the wheels up until they click.",
-      "The car seat can be installed with or without the ISOFIX base using a 3-point vehicle seat belt.",
-      "Do not add any aftermarket padding or inserts under the child.",
-      "Always ensure the harness is snug, allowing only one finger to fit between the strap and the child's collarbone."
+      "To unfold, press the red safety button on the back while pulling the handle upwards until you hear a click.",
+      "The handle must rest against the vehicle seat back when used in the car to act as an anti-rebound bar.",
+      "For airplane use, place Doona on the window seat and route the lap belt through the blue guides."
     ],
     "customer_reviews": [
-      "Absolutely perfect for travel. Fit perfectly in our Nissan Patrol and was a breeze to navigate through Dubai airport.",
-      "Love the convenience, but it is a bit heavy (7.5kg) to carry if you are walking up stairs.",
-      "We took it on Emirates airline and it fit in the cabin just fine. Made the flight with our newborn so much easier.",
-      "In the UAE summer heat, the baby does get a little sweaty, but the sun canopy is huge and offers great shade.",
-      "Very safe and sturdy. The ISOFIX base clicks in securely. Definitely worth the price for the convenience of not carrying a separate stroller."
+      "Fits perfectly in my Prado.",
+      "Great during Dubai summer drives.",
+      "Easy airport travel stroller mode."
+    ]
+  },
+  {
+    "id": 2,
+    "product_name": "NextFit Zip Convertible Car Seat",
+    "brand": "Chicco",
+    "category": "Car Seats",
+    "price": "1,499",
+    "currency": "AED",
+    "image_url": "https://m.media-amazon.com/images/I/41AtCKxzy2L._SY300_SX300_QL70_FMwebp_.jpg",
+    "short_description": "Engineered for maximum safety and comfort, featuring a zip-off machine washable seat pad.",
+    "rating": 4.8,
+    "technical_specs": {
+      "dimensions_folded": "N/A",
+      "dimensions_open": "53 x 48 x 74 cm",
+      "weight_kg": "11.3",
+      "age_range": "Birth to approx. 6 years",
+      "max_weight": "30 kg",
+      "materials": "Polyester, Steel frame",
+      "harness_type": "5-point harness"
+    },
+    "compatibility": {
+      "cars_supported_examples": [
+        "Audi Q7",
+        "BMW X5",
+        "Lexus RX",
+        "Kia Sorento"
+      ],
+      "isofix_support": true,
+      "airplane_friendly": false
+    },
+    "climate_notes": "Zip-off pad is great for regular washing during sweaty summer months.",
+    "safety_notes": "Keep rear-facing until child is at least 18kg for maximum safety.",
+    "manual_snippets": [
+      "Use the SuperCinch LATCH tightener to secure the seat tightly to your vehicle.",
+      "Adjust the ReclineSure 9-position leveling system to fit the angle of your vehicle seat.",
+      "Do not use abrasive cleaners on the harness straps."
+    ],
+    "customer_reviews": [
+      "Super sturdy and my 4 year old still fits comfortably.",
+      "The zip off fabric is a lifesaver for diaper blowouts.",
+      "A bit wide, so fitting 3 across in my SUV is tight."
+    ]
+  },
+  {
+    "id": 3,
+    "product_name": "YOYO2 Travel Stroller",
+    "brand": "Babyzen",
+    "category": "Strollers",
+    "price": "1,850",
+    "currency": "AED",
+    "image_url": "https://imgs.search.brave.com/PzW4mVKDuHcj-wx90a13B39CRZCcgMdkCCEgBhYpx9U/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/c3dhZGRsZXNiYWJ5/LmNvbS9jZG4vc2hv/cC9wcm9kdWN0cy9v/bGl2ZS5qcGc_dj0x/NjgxOTI1MjU1Jndp/ZHRoPTE0NDU",
+    "short_description": "The ultra-compact stroller that folds and unfolds in a moment, can be worn over the shoulder and tucks in anywhere.",
+    "rating": 4.9,
+    "technical_specs": {
+      "dimensions_folded": "52 x 44 x 18 cm",
+      "dimensions_open": "106 x 86 x 44 cm",
+      "weight_kg": "6.2",
+      "age_range": "6 months to 4 years",
+      "max_weight": "22 kg",
+      "materials": "Aluminum alloy, stainless steel, glass-fiber reinforced plastics",
+      "harness_type": "5-point harness"
+    },
+    "compatibility": {
+      "cars_supported_examples": [
+        "All cars",
+        "Mini Cooper",
+        "Fiat 500"
+      ],
+      "isofix_support": false,
+      "airplane_friendly": true
+    },
+    "climate_notes": "Features an anti-UV (UPF 50+) water-repellent fabric canopy.",
+    "safety_notes": "Always engage the parking brake when stopped.",
+    "manual_snippets": [
+      "Fold the stroller by pressing the white buttons on the side, then pulling the red latch.",
+      "Approved as cabin luggage for most airlines, but always check with your carrier.",
+      "Machine washable fabrics at 30°C."
+    ],
+    "customer_reviews": [
+      "I literally carry this onto Emirates flights with zero hassle.",
+      "Best purchase ever for mall walking.",
+      "Incredible steering with just one hand."
+    ]
+  },
+  {
+    "id": 4,
+    "product_name": "RodiFix Booster Seat",
+    "brand": "Maxi-Cosi",
+    "category": "Car Seats",
+    "price": "950",
+    "currency": "AED",
+    "image_url": "https://media.littlewoods.com/i/littlewoods/VTR0M_SQ1_0000000088_NO_COLOR_SLa?$pdp_1650x2199_hi_res$&fmt=webp",
+    "short_description": "A high-back booster seat offering excellent side-impact protection and a quick, easy buckle system.",
+    "rating": 4.7,
+    "technical_specs": {
+      "dimensions_folded": "N/A",
+      "dimensions_open": "49 x 51 x 64 cm",
+      "weight_kg": "6.6",
+      "age_range": "3.5 to 12 years",
+      "max_weight": "36 kg",
+      "materials": "AirProtect foam, moisture-wicking fabric",
+      "harness_type": "Uses vehicle 3-point seatbelt"
+    },
+    "compatibility": {
+      "cars_supported_examples": [
+        "Tesla Model Y",
+        "Toyota RAV4",
+        "Porsche Macan"
+      ],
+      "isofix_support": true,
+      "airplane_friendly": false
+    },
+    "climate_notes": "Breathable fabrics prevent overheating on long road trips.",
+    "safety_notes": "Ensure the vehicle seatbelt passes through the red belt guides.",
+    "manual_snippets": [
+      "Install using ISOFIX connectors for extra stability even when the child is not in the seat.",
+      "The headrest is adjustable to grow with your child.",
+      "AirProtect technology in the headrest reduces the risk of head injury by 20%."
+    ],
+    "customer_reviews": [
+      "My 6-year-old loves how comfortable it is.",
+      "Very easy to switch between cars.",
+      "The seatbelt routing is foolproof."
+    ]
+  },
+  {
+    "id": 5,
+    "product_name": "Sena Aire Travel Crib",
+    "brand": "Nuna",
+    "category": "Nursery",
+    "price": "1,200",
+    "currency": "AED",
+    "image_url": "https://images.unsplash.com/photo-1611145326880-99435f0f353a?auto=format&fit=crop&w=800&q=80",
+    "short_description": "Advanced air design delivers maximum airflow for unparalleled deep sleeps. Pops open easily into a sturdy, safe play space.",
+    "rating": 4.8,
+    "technical_specs": {
+      "dimensions_folded": "34 x 36 x 86 cm",
+      "dimensions_open": "105 x 73 x 78 cm",
+      "weight_kg": "10.0",
+      "age_range": "Birth to 3 years",
+      "max_weight": "15 kg",
+      "materials": "Mesh, Aluminum zigzag frame",
+      "harness_type": "N/A"
+    },
+    "compatibility": {
+      "cars_supported_examples": [
+        "Fits in all trunks"
+      ],
+      "isofix_support": false,
+      "airplane_friendly": false
+    },
+    "climate_notes": "All mesh sides and floor provide 360-degree ventilation, perfect for warm climates.",
+    "safety_notes": "Stop using when child is able to climb out or reaches the height of 86 cm.",
+    "manual_snippets": [
+      "Push down on the center hub to lock the crib open.",
+      "Pull the center strap upwards to fold the crib instantly.",
+      "The mattress cover is machine washable and dryer safe."
+    ],
+    "customer_reviews": [
+      "So easy to fold, literally takes 3 seconds.",
+      "The mesh breathes incredibly well.",
+      "A bit heavy for air travel, but perfect for road trips."
     ]
   }
 ]
