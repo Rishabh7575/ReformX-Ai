@@ -107,8 +107,8 @@ export default function AiChatWidget({ productId, productName }) {
 
                   {/* Warning Alert */}
                   {isDanger && (
-                    <div className="flex items-center gap-2 text-red-600 font-bold text-xs uppercase tracking-wider mb-1 bg-red-100 p-2 rounded-lg">
-                      <AlertTriangle className="w-4 h-4" /> Safety Alert
+                    <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider mb-2 bg-red-500 p-3 rounded-lg shadow-sm border border-red-600">
+                      <AlertTriangle className="w-5 h-5" /> SAFETY WARNING
                     </div>
                   )}
 
@@ -141,12 +141,12 @@ export default function AiChatWidget({ productId, productName }) {
                         <div className="w-full mt-1">
                           <div className="flex justify-between text-[10px] uppercase text-premium-500 font-bold mb-1.5 tracking-wider">
                             <span>Confidence</span>
-                            <span>{msg.confidence_score}%</span>
+                            <span>{msg.confidence_score === 0 ? 'Low Confidence' : `${msg.confidence_score}%`}</span>
                           </div>
                           <div className="w-full bg-premium-100 rounded-full h-1.5 overflow-hidden">
                             <div
                               className={`h-1.5 rounded-full transition-all duration-1000 ${msg.confidence_score > 80 ? 'bg-emerald-400' : msg.confidence_score > 50 ? 'bg-amber-400' : 'bg-red-400'}`}
-                              style={{ width: `${msg.confidence_score}%` }}
+                              style={{ width: `${Math.max(msg.confidence_score, 5)}%` }}
                             ></div>
                           </div>
                         </div>

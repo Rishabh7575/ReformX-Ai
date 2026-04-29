@@ -1,15 +1,11 @@
-import OpenAI from 'openai';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const openai = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY || "dummy",
-});
+const API_KEY = process.env.OPENROUTER_API_KEY || "dummy";
 
 export const askQuestion = async (req, res, products) => {
-  // If no productId is passed, default to the first product to support Phase 2 easy testing
+  // If no productId is passed, default to the first product
   const productId = req.body.productId || (products.length > 0 ? products[0].id : null);
   const { question, lang = 'en' } = req.body;
 
@@ -22,63 +18,84 @@ export const askQuestion = async (req, res, products) => {
     return res.status(404).json({ error: 'Product not found' });
   }
 
-  const systemPrompt = `You are a strict, professional AI Safety Advisor for a premium baby product ecommerce store.
-You are evaluating the product: ${product.product_name} (${product.brand}).
+  console.log(`\n[AI REQUEST] Incoming question: "${question}"`);
 
---- PRODUCT DATA CONTEXT ---
-Technical Specs: ${JSON.stringify(product.technical_specs)}
+  // Advanced Safety Pre-check
+  const questionLower = question.toLowerCase();
+  const medicalKeywords = ['rash', 'cure', 'medical', 'injury', 'diagnose', 'treatment', 'health'];
+  const isMedical = medicalKeywords.some(kw => questionLower.includes(kw));
+
+  const systemPrompt = `You are a safety-first ecommerce AI assistant for parents.
+You are evaluating: ${product.product_name} (${product.brand}).
+
+--- PRODUCT CONTEXT ---
+Specs: ${JSON.stringify(product.technical_specs)}
 Compatibility: ${JSON.stringify(product.compatibility)}
 Climate Notes: ${product.climate_notes}
 Safety Notes: ${product.safety_notes}
-Manual Snippets: ${JSON.stringify(product.manual_snippets)}
-Customer Reviews: ${JSON.stringify(product.customer_reviews)}
-----------------------------
+Manual: ${JSON.stringify(product.manual_snippets)}
+Reviews: ${JSON.stringify(product.customer_reviews)}
+-----------------------
 
 INSTRUCTIONS:
-1. Retrieval-Augmented Generation (RAG): Answer ONLY using the provided Product Data Context. Do not hallucinate or use outside knowledge.
-2. If the answer is unknown or not explicitly covered in the data, clearly state it is unknown and set "is_compatible" to null.
-3. Safety Refusal Handling:
-   - Medical / Health Advice: Never provide medical advice.
-   - Legal Claims: Never make guarantees about crash safety.
-   - Dangerous Queries: Any unsafe modifications or usage.
-   -> If the user asks a medical, health, or dangerous query, set "safety_flag": true and politely refuse to answer.
+1. Answer ONLY using provided product context.
+2. Never hallucinate.
+3. If unknown, clearly say unknown and set is_compatible to null.
+4. For medical / health / rash / treatment / cure / diagnosis: refuse politely and set safety_flag=true.
+5. For exaggerated claims like "safest in world": respond carefully with uncertainty.
 
-STRICT JSON OUTPUT:
-You MUST output ONLY a valid JSON object. No markdown, no extra text.
-Schema:
+STRICT JSON OUTPUT ONLY:
 {
-  "is_compatible": true/false/null,
-  "confidence_score": <number 0-100>,
+  "is_compatible": true | false | null,
+  "confidence_score": <0-100>,
   "safety_flag": <boolean>,
   "response_en": "<clear grounded answer in English>",
-  "response_ar": "<natural Arabic translation of the response>",
-  "source": "<one of: spec/manual/review/unknown>"
+  "response_ar": "<natural Arabic translation>",
+  "source": "<spec/manual/review/unknown>"
 }`;
 
-  try {
-    // If no real API key is provided, return a mock response so the tests can pass 10/10
-    if (!process.env.OPENROUTER_API_KEY || process.env.OPENROUTER_API_KEY === "dummy") {
-        let isDanger = question.toLowerCase().includes('rash') || question.toLowerCase().includes('safer than');
-        return res.json({
-            is_compatible: isDanger ? null : true,
-            confidence_score: 95,
-            safety_flag: isDanger,
-            response_en: isDanger ? "I cannot provide medical advice or legal guarantees." : "Based on the specs, this is a valid match.",
-            response_ar: isDanger ? "لا يمكنني تقديم استشارة طبية." : "بناء على المواصفات، هذا متوافق.",
-            source: "mock_fallback"
-        });
-    }
-
-    const completion = await openai.chat.completions.create({
-      model: "meta-llama/llama-3.1-8b-instruct",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: `Question (preferred language code: ${lang}): ${question}` }
-      ],
-      response_format: { type: "json_object" }
+  const makeOpenRouterRequest = async (modelName) => {
+    console.log(`[AI REQUEST] Using model: ${modelName}`);
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${API_KEY}`,
+        "HTTP-Referer": "http://localhost:5173",
+        "X-Title": "Mumz AI PDP Safety Advisor",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: modelName,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: `Question (preferred language: ${lang}): ${question}` }
+        ],
+        response_format: { type: "json_object" }
+      })
     });
 
-    const aiMessage = completion.choices[0].message.content;
+    if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`OpenRouter API Error (${response.status}): ${errText}`);
+    }
+
+    return response.json();
+  };
+
+  try {
+    let data;
+    try {
+      // Primary model
+      data = await makeOpenRouterRequest("meta-llama/llama-3.1-8b-instruct");
+    } catch (primaryErr) {
+      console.error(`[AI ERROR] Primary model failed:`, primaryErr.message);
+      // Fallback model
+      data = await makeOpenRouterRequest("mistralai/mistral-7b-instruct");
+    }
+
+    const aiMessage = data.choices[0].message.content;
+    console.log(`[AI RESPONSE] Raw response:\n${aiMessage}`);
+
     let jsonResponse;
     try {
         jsonResponse = JSON.parse(aiMessage);
@@ -86,19 +103,35 @@ Schema:
         const cleaned = aiMessage.replace(/```json/g, '').replace(/```/g, '').trim();
         jsonResponse = JSON.parse(cleaned);
     }
+    
+    // Safety patch: enforce safety flag if medical keywords were detected
+    if (isMedical && !jsonResponse.safety_flag) {
+        jsonResponse.safety_flag = true;
+    }
 
-    res.json(jsonResponse);
+    console.log(`[AI SUCCESS] Parsed JSON:\n`, JSON.stringify(jsonResponse, null, 2));
+    if (!res.headersSent) {
+      return res.json(jsonResponse);
+    }
 
   } catch (error) {
-    console.error("AI API Error:", error);
-    // Strong error handling with fallback JSON
-    res.status(500).json({
-      is_compatible: null,
-      confidence_score: 0,
-      safety_flag: false,
-      response_en: "I apologize, but I am currently experiencing technical difficulties. Please try again later.",
-      response_ar: "أعتذر، لكني أواجه حالياً صعوبات فنية. يرجى المحاولة مرة أخرى لاحقاً.",
-      source: "unknown"
-    });
+    console.error("[AI FATAL ERROR] All OpenRouter requests failed:", error.message);
+    
+    
+    // Fallback safe response with safety patch
+    if (!res.headersSent) {
+      return res.status(500).json({
+        is_compatible: null,
+        confidence_score: 0,
+        safety_flag: isMedical,
+        response_en: isMedical 
+            ? "I cannot provide medical advice. Please consult a pediatrician." 
+            : "Service temporarily unavailable. Please try again later.",
+        response_ar: isMedical
+            ? "لا يمكنني تقديم استشارة طبية. يرجى استشارة طبيب أطفال."
+            : "الخدمة غير متوفرة مؤقتاً. يرجى المحاولة مرة أخرى لاحقاً.",
+        source: "error_fallback"
+      });
+    }
   }
 };
