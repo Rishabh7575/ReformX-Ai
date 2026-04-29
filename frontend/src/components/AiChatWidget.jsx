@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Send, Sparkles, AlertTriangle, ShieldCheck, CheckCircle2, HelpCircle, XCircle, Info, RefreshCw } from 'lucide-react';
+import { Send, Sparkles, AlertTriangle, ShieldCheck, CheckCircle2, HelpCircle, XCircle, Info, RefreshCw, MessageSquare } from 'lucide-react';
 import { askAiAdvisor } from '../services/api';
 
 export default function AiChatWidget({ productId, productName }) {
@@ -17,6 +17,12 @@ export default function AiChatWidget({ productId, productName }) {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+
+  const suggestedPrompts = [
+    "Will this fit Nissan Patrol?",
+    "Safe for Dubai heat?",
+    "Good for newborn travel?"
+  ];
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -35,15 +41,15 @@ export default function AiChatWidget({ productId, productName }) {
       setInput('');
       setMessages(prev => [...prev, { role: 'user', content: questionToAsk, timestamp: new Date() }]);
     }
-
+    
     setIsLoading(true);
 
     try {
       const data = await askAiAdvisor(questionToAsk, i18n.language);
       setMessages(prev => [...prev, { role: 'ai', ...data, timestamp: new Date() }]);
     } catch (error) {
-      setMessages(prev => [...prev, {
-        role: 'ai',
+      setMessages(prev => [...prev, { 
+        role: 'ai', 
         response_en: 'Service temporarily unavailable. Please try again.',
         response_ar: 'الخدمة غير متوفرة مؤقتاً. يرجى المحاولة مرة أخرى.',
         type: 'error',
@@ -53,6 +59,10 @@ export default function AiChatWidget({ productId, productName }) {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handlePromptClick = (prompt) => {
+    setInput(prompt);
   };
 
   const getAiMessageText = (msg) => {
@@ -65,31 +75,50 @@ export default function AiChatWidget({ productId, productName }) {
   };
 
   return (
-    <div className="card flex flex-col h-[600px] lg:h-[700px] border-t-4 border-t-[#d99c9c] shadow-xl relative overflow-hidden">
+    <div className="card flex flex-col h-[600px] lg:h-[800px] border-t-4 border-t-[#d99c9c] shadow-2xl relative overflow-hidden animate-fade-in">
       {/* Header */}
       <div className="bg-white p-5 flex items-center gap-4 border-b border-premium-100 z-10 relative">
-        <div className="w-12 h-12 bg-[#fceeee] rounded-full flex items-center justify-center text-[#d99c9c] shrink-0">
+        <div className="w-12 h-12 bg-[#fceeee] rounded-2xl flex items-center justify-center text-[#d99c9c] shrink-0 shadow-inner">
           <Sparkles className="w-6 h-6" />
         </div>
         <div>
-          <h2 className="font-bold text-lg text-premium-800">Ask Mumz AI Advisor</h2>
-          <p className="text-xs text-premium-500 font-medium tracking-wide">Instant safety & compatibility checks</p>
+          <h2 className="font-bold text-lg text-premium-900 tracking-tight">Ask Mumz AI Advisor</h2>
+          <p className="text-xs text-premium-500 font-medium tracking-wide flex items-center gap-1"><ShieldCheck className="w-3 h-3 text-emerald-500" /> Instant safety & compatibility</p>
         </div>
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-6 bg-[#fdfaf6] z-10 relative">
+      <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-6 bg-[#FAF8F5] z-10 relative scroll-smooth">
+        
+        {messages.length === 1 && (
+          <div className="flex flex-col gap-2 mt-2 mb-4 animate-fade-in">
+            <span className="text-xs font-semibold text-premium-400 uppercase tracking-widest text-center mb-2">Try asking:</span>
+            <div className="flex flex-col gap-2">
+              {suggestedPrompts.map((prompt, i) => (
+                <button 
+                  key={i}
+                  onClick={() => handlePromptClick(prompt)}
+                  className="bg-white border border-premium-200 text-premium-700 text-sm py-3 px-4 rounded-2xl text-left hover:border-[#d99c9c] hover:text-[#d99c9c] hover:shadow-md transition-all flex items-center justify-between group"
+                >
+                  {prompt}
+                  <MessageSquare className="w-4 h-4 text-premium-300 group-hover:text-[#d99c9c] transition-colors" />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {messages.map((msg, idx) => {
           const isUser = msg.role === 'user';
-
+          
           if (isUser) {
             return (
-              <div key={idx} className="flex justify-end">
+              <div key={idx} className="flex justify-end animate-fade-in">
                 <div className="flex flex-col items-end">
-                  <div className="max-w-[85%] bg-[#d99c9c] text-white rounded-3xl rounded-tr-sm p-4 shadow-sm text-sm leading-relaxed">
+                  <div className="max-w-[85%] bg-gradient-to-br from-[#d99c9c] to-[#c68989] text-white rounded-3xl rounded-tr-sm p-4 shadow-md text-sm leading-relaxed">
                     {msg.content}
                   </div>
-                  <span className="text-[10px] text-premium-400 mt-1 px-1">{formatTime(msg.timestamp)}</span>
+                  <span className="text-[10px] text-premium-400 mt-1 px-1 font-medium">{formatTime(msg.timestamp)}</span>
                 </div>
               </div>
             );
@@ -99,12 +128,12 @@ export default function AiChatWidget({ productId, productName }) {
           const isDanger = msg.safety_flag;
           const isError = msg.type === 'error';
           const cardBorder = isDanger ? 'border-red-400 bg-red-50' : isError ? 'border-amber-400 bg-amber-50' : 'border-premium-100 bg-white';
-
+          
           return (
-            <div key={idx} className="flex justify-start">
-              <div className="flex flex-col items-start w-full">
-                <div className={`max-w-[95%] border ${cardBorder} shadow-sm rounded-3xl rounded-tl-sm p-5 flex flex-col gap-4`}>
-
+            <div key={idx} className="flex justify-start animate-fade-in">
+               <div className="flex flex-col items-start w-full">
+                <div className={`max-w-[95%] border ${cardBorder} shadow-sm rounded-3xl rounded-tl-sm p-5 flex flex-col gap-4 relative overflow-hidden`}>
+                  
                   {/* Warning Alert */}
                   {isDanger && (
                     <div className="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider mb-2 bg-red-500 p-3 rounded-lg shadow-sm border border-red-600">
@@ -119,33 +148,33 @@ export default function AiChatWidget({ productId, productName }) {
 
                   {/* Structured Data Badges */}
                   {!msg.type && (
-                    <div className="mt-2 pt-4 border-t border-premium-100/50 flex flex-col gap-3">
-
+                    <div className="mt-3 pt-4 border-t border-premium-100/50 flex flex-col gap-3">
+                      
                       <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider">
                         {msg.is_compatible === true ? (
-                          <span className="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-100">
-                            <CheckCircle2 className="w-4 h-4" /> Compatible
+                          <span className="flex items-center gap-1.5 text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-100 shadow-sm">
+                            <CheckCircle2 className="w-4 h-4"/> Compatible
                           </span>
                         ) : msg.is_compatible === false ? (
-                          <span className="flex items-center gap-1.5 text-red-700 bg-red-50 px-2.5 py-1.5 rounded-lg border border-red-100">
-                            <XCircle className="w-4 h-4" /> Not Compatible
+                          <span className="flex items-center gap-1.5 text-red-700 bg-red-50 px-3 py-2 rounded-xl border border-red-100 shadow-sm">
+                            <XCircle className="w-4 h-4"/> Not Compatible
                           </span>
                         ) : (
-                          <span className="flex items-center gap-1.5 text-amber-700 bg-amber-50 px-2.5 py-1.5 rounded-lg border border-amber-100">
-                            <HelpCircle className="w-4 h-4" /> Not Sure
+                          <span className="flex items-center gap-1.5 text-amber-700 bg-amber-50 px-3 py-2 rounded-xl border border-amber-100 shadow-sm">
+                            <HelpCircle className="w-4 h-4"/> Not Sure
                           </span>
                         )}
                       </div>
 
                       {msg.confidence_score !== undefined && (
-                        <div className="w-full mt-1">
+                        <div className="w-full mt-2">
                           <div className="flex justify-between text-[10px] uppercase text-premium-500 font-bold mb-1.5 tracking-wider">
                             <span>Confidence</span>
                             <span>{msg.confidence_score === 0 ? 'Low Confidence' : `${msg.confidence_score}%`}</span>
                           </div>
-                          <div className="w-full bg-premium-100 rounded-full h-1.5 overflow-hidden">
+                          <div className="w-full bg-premium-100 rounded-full h-2 overflow-hidden shadow-inner">
                             <div
-                              className={`h-1.5 rounded-full transition-all duration-1000 ${msg.confidence_score > 80 ? 'bg-emerald-400' : msg.confidence_score > 50 ? 'bg-amber-400' : 'bg-red-400'}`}
+                              className={`h-2 rounded-full transition-all duration-1000 ${msg.confidence_score > 80 ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : msg.confidence_score > 50 ? 'bg-gradient-to-r from-amber-400 to-amber-500' : 'bg-gradient-to-r from-red-400 to-red-500'}`}
                               style={{ width: `${Math.max(msg.confidence_score, 5)}%` }}
                             ></div>
                           </div>
@@ -153,7 +182,7 @@ export default function AiChatWidget({ productId, productName }) {
                       )}
 
                       {msg.source && (
-                        <div className="flex items-center gap-1.5 text-[10px] text-premium-400 font-bold uppercase tracking-widest mt-1">
+                        <div className="flex items-center gap-1.5 text-[10px] text-premium-400 font-bold uppercase tracking-widest mt-2">
                           <Info className="w-3 h-3" /> Source: {msg.source}
                         </div>
                       )}
@@ -162,28 +191,31 @@ export default function AiChatWidget({ productId, productName }) {
 
                   {/* Retry Button */}
                   {isError && msg.originalQuestion && (
-                    <button
+                    <button 
                       onClick={() => handleSubmit(null, msg.originalQuestion)}
-                      className="flex items-center justify-center gap-2 mt-2 py-2 px-4 bg-white border border-amber-200 text-amber-800 rounded-xl text-sm font-medium hover:bg-amber-100 transition-colors"
+                      className="flex items-center justify-center gap-2 mt-2 py-2.5 px-4 bg-white border border-amber-200 text-amber-800 rounded-xl text-sm font-semibold hover:bg-amber-50 transition-colors shadow-sm"
                     >
                       <RefreshCw className="w-4 h-4" /> Retry Request
                     </button>
                   )}
                 </div>
-                <span className="text-[10px] text-premium-400 mt-1 px-1">{formatTime(msg.timestamp)}</span>
+                <span className="text-[10px] text-premium-400 mt-1 px-1 font-medium">{formatTime(msg.timestamp)}</span>
               </div>
             </div>
           );
         })}
-
+        
         {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-white border border-premium-100 shadow-sm rounded-3xl rounded-tl-sm p-5 flex flex-col gap-2">
-              <div className="text-xs text-premium-400 font-medium tracking-wide mb-1">Analyzing product safety...</div>
-              <div className="flex gap-2">
-                <div className="w-2.5 h-2.5 bg-[#d99c9c] rounded-full animate-bounce"></div>
-                <div className="w-2.5 h-2.5 bg-[#d99c9c] rounded-full animate-bounce delay-100"></div>
-                <div className="w-2.5 h-2.5 bg-[#d99c9c] rounded-full animate-bounce delay-200"></div>
+          <div className="flex justify-start animate-fade-in">
+            <div className="bg-white border border-premium-100 shadow-sm rounded-3xl rounded-tl-sm p-5 flex flex-col gap-3">
+              <div className="text-xs text-premium-400 font-semibold tracking-wide flex items-center gap-2">
+                <Sparkles className="w-3 h-3 text-[#d99c9c] animate-pulse" />
+                Analyzing product safety...
+              </div>
+              <div className="flex gap-2.5 px-2">
+                <div className="w-2.5 h-2.5 bg-[#d99c9c] rounded-full animate-bounce shadow-sm"></div>
+                <div className="w-2.5 h-2.5 bg-[#d99c9c] rounded-full animate-bounce delay-100 shadow-sm"></div>
+                <div className="w-2.5 h-2.5 bg-[#d99c9c] rounded-full animate-bounce delay-200 shadow-sm"></div>
               </div>
             </div>
           </div>
@@ -193,27 +225,28 @@ export default function AiChatWidget({ productId, productName }) {
 
       {/* Input Area */}
       <form onSubmit={handleSubmit} className="p-4 bg-white border-t border-premium-100 z-10 relative">
-        <div className="relative">
+        <div className="relative flex items-center">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Will this fit in Nissan Patrol?"
-            className="input-field rtl:pl-24 ltr:pr-24 text-sm font-medium disabled:opacity-50"
+            placeholder="Type your question..."
+            className="input-field rtl:pl-16 ltr:pr-16 text-sm font-medium disabled:opacity-50 py-4"
             disabled={isLoading}
           />
-          <button
-            type="submit"
+          <button 
+            type="submit" 
             disabled={isLoading || !input.trim()}
-            className="absolute rtl:left-2 ltr:right-2 top-1/2 -translate-y-1/2 px-5 py-2.5 bg-[#d99c9c] text-white rounded-xl font-medium text-sm hover:bg-[#c68989] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
+            className="absolute rtl:left-2 ltr:right-2 w-12 h-12 flex items-center justify-center bg-[#d99c9c] text-white rounded-xl hover:bg-[#c68989] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md active:scale-95"
+            aria-label="Send message"
           >
-            Ask AI
+            <Send className="w-5 h-5 rtl:rotate-180" />
           </button>
         </div>
       </form>
-
+      
       {/* Decorative background blob */}
-      <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-[#fceeee] rounded-full blur-3xl opacity-60 z-0 pointer-events-none"></div>
+      <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-[#fceeee] rounded-full blur-[80px] opacity-70 z-0 pointer-events-none"></div>
     </div>
   );
 }

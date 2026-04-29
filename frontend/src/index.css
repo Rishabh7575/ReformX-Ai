@@ -4,24 +4,52 @@
 
 @layer base {
   body {
-    @apply bg-[#fdfaf6] text-premium-900 font-sans antialiased; /* Light beige background */
+    @apply bg-[#FAF8F5] text-premium-900 font-sans antialiased selection:bg-[#EED5D1] selection:text-premium-900;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display text-premium-800;
+    @apply font-display text-premium-900;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-[#e6b3b3] text-white px-8 py-3 rounded-full font-medium hover:bg-[#d99c9c] transition-all duration-300 shadow-sm hover:shadow focus:outline-none focus:ring-2 focus:ring-[#fceeee]; /* Blush pink primary */
+    @apply bg-[#D99C9C] text-white px-8 py-3.5 rounded-2xl font-medium hover:bg-[#c68989] transition-all duration-300 shadow-[0_4px_14px_0_rgba(217,156,156,0.39)] hover:shadow-[0_6px_20px_rgba(217,156,156,0.23)] hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[#fceeee] focus:ring-offset-2 active:scale-95;
   }
   .card {
-    @apply bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-premium-100 overflow-hidden transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)];
+    @apply bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.03)] border border-premium-100/50 overflow-hidden transition-all duration-500 hover:shadow-[0_8px_40px_rgb(0,0,0,0.06)];
   }
   .input-field {
-    @apply w-full px-5 py-4 rounded-2xl border border-premium-100 focus:outline-none focus:ring-2 focus:ring-[#e6b3b3] bg-[#fdfaf6] transition-all text-premium-800;
+    @apply w-full px-5 py-4 rounded-2xl border border-premium-100 focus:outline-none focus:ring-2 focus:ring-[#e6b3b3] focus:border-transparent bg-[#FAF8F5] transition-all text-premium-800 placeholder-premium-400;
   }
   .expandable-header {
-    @apply flex justify-between items-center w-full py-4 text-left font-medium text-lg text-premium-800 hover:text-[#e6b3b3] transition-colors border-b border-premium-100 last:border-b-0;
+    @apply flex justify-between items-center w-full py-4.5 text-left font-semibold text-lg text-premium-800 hover:text-[#d99c9c] transition-colors border-b border-premium-50 last:border-b-0 group;
   }
+  
+  .badge-trust {
+    @apply flex items-center justify-center gap-2 px-4 py-2.5 bg-white border border-premium-100 rounded-xl shadow-sm text-sm font-medium text-premium-700 hover:border-[#d99c9c]/30 hover:bg-[#FAF8F5] transition-all duration-300;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-premium-200 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-premium-300;
+}
+
+/* Smooth fade in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
 }

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CheckCircle, AlertTriangle, ChevronDown, ChevronUp, Star } from 'lucide-react';
+import { CheckCircle, AlertTriangle, ChevronDown, ChevronUp, Star, ShieldCheck, Heart, PlaneTakeoff, Truck } from 'lucide-react';
 
 export default function ProductDetails({ product }) {
   const { t } = useTranslation();
 
   const [openSections, setOpenSections] = useState({
-    specs: true,
-    safety: true,
+    whyLove: true,
+    safetyFeatures: false,
+    specs: false,
     compatibility: false,
     reviews: false
   });
@@ -17,107 +18,130 @@ export default function ProductDetails({ product }) {
   };
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-10 animate-fade-in">
+      {/* Hero Section */}
       <div className="flex flex-col md:flex-row gap-10">
+        {/* Product Image Placeholder */}
         <div className="w-full md:w-1/2">
-          <div className="bg-white rounded-3xl aspect-[4/5] flex items-center justify-center shadow-sm border border-premium-100 p-8">
-            <div className="text-premium-300 font-medium text-center border-2 border-dashed border-premium-200 rounded-2xl w-full h-full flex items-center justify-center">
-              [ High Quality <br /> {product.brand} Placeholder ]
+          <div className="bg-white rounded-[2rem] aspect-[4/5] flex items-center justify-center shadow-sm border border-premium-100 p-8 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#fceeee]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div className="text-premium-300 font-medium text-center border-2 border-dashed border-premium-200 rounded-2xl w-full h-full flex items-center justify-center relative z-10 transition-transform duration-500 group-hover:scale-[1.02]">
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-20 h-20 bg-premium-100 rounded-full flex items-center justify-center">
+                  <Star className="w-8 h-8 text-premium-300" />
+                </div>
+                <p className="tracking-widest uppercase text-sm">[ High Quality <br /> {product.brand} Showcase ]</p>
+              </div>
             </div>
           </div>
         </div>
-        <div className="w-full md:w-1/2 flex flex-col">
-          <h3 className="text-sm uppercase tracking-widest text-[#d99c9c] font-semibold mb-2">{product.brand}</h3>
-          <h1 className="text-4xl md:text-5xl font-bold text-premium-800 leading-tight mb-4">{product.product_name}</h1>
 
-          <div className="flex items-center gap-2 mb-6">
-            <div className="flex text-yellow-400">
+        {/* Product Info */}
+        <div className="w-full md:w-1/2 flex flex-col justify-center">
+          <h3 className="text-xs uppercase tracking-[0.2em] text-[#d99c9c] font-bold mb-3">{product.brand}</h3>
+          <h1 className="text-4xl lg:text-5xl font-bold text-premium-900 leading-[1.1] mb-5">{product.product_name}</h1>
+
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex text-amber-400">
               {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-5 h-5 fill-current" />)}
             </div>
-            <span className="text-premium-500 text-sm">(4.9 based on {product.customer_reviews?.length || 0} reviews)</span>
+            <span className="text-premium-500 text-sm font-medium border-l border-premium-200 pl-3">(4.9 based on {product.customer_reviews?.length || 0} reviews)</span>
           </div>
 
-          <div className="text-3xl font-light text-premium-900 mb-8">
-            {product.currency} {product.price}
+          <div className="text-3xl font-light text-premium-900 mb-8 flex items-baseline gap-2">
+            <span className="text-xl font-medium text-premium-400">{product.currency}</span>
+            {product.price}
           </div>
 
-          <ul className="space-y-3 mb-8">
-            <li className="flex items-center gap-3 text-premium-700">
-              <CheckCircle className="w-5 h-5 text-[#e6b3b3]" /> Free Shipping & Returns
-            </li>
-            <li className="flex items-center gap-3 text-premium-700">
-              <CheckCircle className="w-5 h-5 text-[#e6b3b3]" /> 2-Year Brand Warranty
-            </li>
-            <li className="flex items-center gap-3 text-premium-700">
-              <CheckCircle className="w-5 h-5 text-[#e6b3b3]" /> Airplane Friendly
-            </li>
-          </ul>
-
-          <div className="mt-auto pt-4 border-t border-premium-100">
-            <button className="btn-primary w-full py-4 text-lg">Add to Cart</button>
+          {/* Trust Badges */}
+          <div className="flex flex-wrap gap-3 mb-10">
+            <div className="badge-trust">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" /> Safety First
+            </div>
+            <div className="badge-trust">
+              <Heart className="w-4 h-4 text-[#d99c9c]" /> Parent Approved
+            </div>
+            <div className="badge-trust">
+              <Truck className="w-4 h-4 text-blue-600" /> Fast Delivery
+            </div>
           </div>
+
+          <button className="btn-primary w-full md:w-auto text-lg py-4 shadow-xl shadow-[#d99c9c]/20">
+            Add to Cart
+          </button>
         </div>
       </div>
 
-      <div className="card p-6 md:p-10">
-
-        {/* Specifications Section */}
+      {/* Accordions */}
+      <div className="card p-8 lg:p-10">
+        
+        {/* Why Parents Love It */}
         <div>
-          <button onClick={() => toggleSection('specs')} className="expandable-header">
-            Specifications
-            {openSections.specs ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          <button onClick={() => toggleSection('whyLove')} className="expandable-header">
+            <div className="flex items-center gap-3">
+              <Heart className="w-5 h-5 text-[#d99c9c]" />
+              Why Parents Love It
+            </div>
+            {openSections.whyLove ? <ChevronUp className="w-5 h-5 text-premium-400" /> : <ChevronDown className="w-5 h-5 text-premium-400" />}
           </button>
-          {openSections.specs && (
-            <div className="py-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-premium-700">
-              {Object.entries(product.technical_specs || {}).map(([key, value]) => (
-                <div key={key} className="flex flex-col border-b border-premium-50 pb-2">
-                  <span className="text-xs uppercase tracking-wider text-premium-400 font-semibold">{key.replace(/_/g, ' ')}</span>
-                  <span className="font-medium mt-1">{value}</span>
-                </div>
-              ))}
+          {openSections.whyLove && (
+            <div className="py-6 text-premium-700 leading-relaxed animate-fade-in">
+              <p className="mb-4">Designed for modern parents on the go, this seamless system transitions from car seat to stroller in seconds. It eliminates the need to carry an extra stroller in your trunk, making quick trips to the supermarket or navigating busy airports completely effortless.</p>
             </div>
           )}
         </div>
 
-        {/* Safety & Climate Section */}
-        <div>
-          <button onClick={() => toggleSection('safety')} className="expandable-header">
-            Safety & Climate Notes
-            {openSections.safety ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+        {/* Key Safety Features */}
+        <div className="border-t border-premium-50">
+          <button onClick={() => toggleSection('safetyFeatures')} className="expandable-header">
+            <div className="flex items-center gap-3">
+              <ShieldCheck className="w-5 h-5 text-emerald-600" />
+              Key Safety Features
+            </div>
+            {openSections.safetyFeatures ? <ChevronUp className="w-5 h-5 text-premium-400" /> : <ChevronDown className="w-5 h-5 text-premium-400" />}
           </button>
-          {openSections.safety && (
-            <div className="py-6 space-y-4">
-              <div className="bg-[#fceeee]/50 p-5 rounded-2xl border border-[#fceeee]">
-                <h4 className="flex items-center gap-2 font-semibold text-[#d99c9c] mb-2">
-                  <AlertTriangle className="w-5 h-5" /> Safety Notes
-                </h4>
-                <p className="text-premium-700 text-sm leading-relaxed">{product.safety_notes}</p>
+          {openSections.safetyFeatures && (
+            <div className="py-6 space-y-4 text-premium-700 animate-fade-in">
+              <div className="flex items-start gap-3 bg-red-50/50 p-5 rounded-2xl border border-red-100">
+                <AlertTriangle className="w-6 h-6 text-red-500 shrink-0 mt-0.5" />
+                <p className="text-red-900 text-sm leading-relaxed">{product.safety_notes}</p>
               </div>
-              <div className="bg-[#eaf4f4]/50 p-5 rounded-2xl border border-[#eaf4f4]">
-                <h4 className="flex items-center gap-2 font-semibold text-teal-600 mb-2">
-                  Climate Notes
-                </h4>
-                <p className="text-premium-700 text-sm leading-relaxed">{product.climate_notes}</p>
-              </div>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <li className="flex items-center gap-2 text-sm"><CheckCircle className="w-4 h-4 text-emerald-500" /> 5-point harness</li>
+                <li className="flex items-center gap-2 text-sm"><CheckCircle className="w-4 h-4 text-emerald-500" /> Side-impact protection</li>
+                <li className="flex items-center gap-2 text-sm"><CheckCircle className="w-4 h-4 text-emerald-500" /> Anti-rebound bar crash tech</li>
+                <li className="flex items-center gap-2 text-sm"><CheckCircle className="w-4 h-4 text-emerald-500" /> Baby-safe materials</li>
+              </ul>
             </div>
           )}
         </div>
 
-        {/* Compatibility Section */}
-        <div>
+        {/* Travel Friendly Benefits */}
+        <div className="border-t border-premium-50">
           <button onClick={() => toggleSection('compatibility')} className="expandable-header">
-            Compatibility
-            {openSections.compatibility ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+            <div className="flex items-center gap-3">
+              <PlaneTakeoff className="w-5 h-5 text-blue-500" />
+              Travel & Compatibility
+            </div>
+            {openSections.compatibility ? <ChevronUp className="w-5 h-5 text-premium-400" /> : <ChevronDown className="w-5 h-5 text-premium-400" />}
           </button>
           {openSections.compatibility && (
-            <div className="py-6 space-y-4 text-premium-700">
-              <p><span className="font-semibold">ISOFIX Support:</span> {product.compatibility?.isofix_support ? 'Yes' : 'No'}</p>
-              <p><span className="font-semibold">Airplane Friendly:</span> {product.compatibility?.airplane_friendly ? 'Yes' : 'No'}</p>
-              <div className="mt-4">
-                <span className="font-semibold block mb-2">Supported Cars (Examples):</span>
+            <div className="py-6 space-y-5 text-premium-700 animate-fade-in">
+              <div className="grid grid-cols-2 gap-6 bg-premium-50 p-6 rounded-2xl">
+                <div>
+                  <span className="text-xs uppercase tracking-widest text-premium-500 block mb-1">ISOFIX Support</span>
+                  <span className="font-semibold text-lg">{product.compatibility?.isofix_support ? 'Yes' : 'No'}</span>
+                </div>
+                <div>
+                  <span className="text-xs uppercase tracking-widest text-premium-500 block mb-1">Airplane Cabin</span>
+                  <span className="font-semibold text-lg">{product.compatibility?.airplane_friendly ? 'Approved' : 'Not Approved'}</span>
+                </div>
+              </div>
+              <div>
+                <span className="text-xs uppercase tracking-widest text-premium-500 block mb-3">Supported Cars (Examples):</span>
                 <div className="flex flex-wrap gap-2">
                   {product.compatibility?.cars_supported_examples?.map(car => (
-                    <span key={car} className="bg-premium-100 px-3 py-1 rounded-full text-sm">{car}</span>
+                    <span key={car} className="bg-white border border-premium-200 px-4 py-1.5 rounded-full text-sm shadow-sm">{car}</span>
                   ))}
                 </div>
               </div>
@@ -125,20 +149,44 @@ export default function ProductDetails({ product }) {
           )}
         </div>
 
-        {/* Customer Reviews Section */}
-        <div>
-          <button onClick={() => toggleSection('reviews')} className="expandable-header border-b-0">
-            Customer Reviews
-            {openSections.reviews ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+        {/* Technical Specifications */}
+        <div className="border-t border-premium-50">
+          <button onClick={() => toggleSection('specs')} className="expandable-header">
+            <div className="flex items-center gap-3">
+              <span className="w-5 h-5 flex items-center justify-center font-bold text-premium-400 text-lg">⚙</span>
+              Technical Specs
+            </div>
+            {openSections.specs ? <ChevronUp className="w-5 h-5 text-premium-400" /> : <ChevronDown className="w-5 h-5 text-premium-400" />}
+          </button>
+          {openSections.specs && (
+            <div className="py-6 grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in">
+              {Object.entries(product.technical_specs || {}).map(([key, value]) => (
+                <div key={key} className="border-b border-premium-100 pb-3 last:border-0">
+                  <span className="text-premium-400 text-xs uppercase tracking-wider block mb-1">{key.replace(/_/g, ' ')}</span>
+                  <span className="text-premium-800 font-medium">{value}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Real Customer Highlights */}
+        <div className="border-t border-premium-50">
+          <button onClick={() => toggleSection('reviews')} className="expandable-header">
+            <div className="flex items-center gap-3">
+              <Star className="w-5 h-5 text-amber-400" />
+              Real Customer Highlights
+            </div>
+            {openSections.reviews ? <ChevronUp className="w-5 h-5 text-premium-400" /> : <ChevronDown className="w-5 h-5 text-premium-400" />}
           </button>
           {openSections.reviews && (
-            <div className="py-6 space-y-4">
+            <div className="py-6 space-y-4 animate-fade-in">
               {product.customer_reviews?.map((review, idx) => (
-                <div key={idx} className="bg-white border border-premium-100 p-4 rounded-xl shadow-sm">
-                  <div className="flex text-yellow-400 mb-2">
+                <div key={idx} className="bg-white border border-premium-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex text-amber-400 mb-3">
                     {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-4 h-4 fill-current" />)}
                   </div>
-                  <p className="text-premium-700 italic text-sm">"{review}"</p>
+                  <p className="text-premium-700 leading-relaxed italic text-sm">"{review}"</p>
                 </div>
               ))}
             </div>
