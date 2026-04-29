@@ -1,36 +1,95 @@
-# Mumz AI Safety Advisor
+# MumzMatch – AI Shopping Advisor for Parents
 
-## Overview
+## Track A – Engineering Submission
 
-Mumz AI Safety Advisor is an AI-powered shopping assistant designed for parenting ecommerce platforms. It helps parents make confident buying decisions by answering real product questions related to safety, compatibility, travel, and everyday use.
+## Project Summary
 
-Instead of reading long product descriptions, users can ask practical questions such as:
+MumzMatch is an AI-powered ecommerce shopping assistant built for parenting platforms like Mumzworld. It helps parents make faster and safer purchase decisions by turning static product pages into interactive product advisors.
 
-- Will this car seat fit in my Nissan Patrol?
-- Is this stroller suitable for Dubai summer heat?
-- Is it good for newborn travel?
-- Can I carry it in flight cabin luggage?
+Parents often have practical questions before buying baby gear, such as whether a car seat fits their vehicle, whether a stroller is suitable for travel, or whether a product is safe for Dubai heat. MumzMatch solves this by combining structured product data, multilingual support, and an embedded AI assistant that gives contextual answers in real time.
 
-The assistant uses product specifications, safety notes, reviews, and compatibility data to generate helpful answers in English and Arabic.
+---
 
-## Features
+## Submission Access
 
-- Smart AI chatbot integrated into product page
-- English and Arabic language support
-- Product compatibility checks for cars and flights
-- Safety-focused recommendations
-- Product specs like age range, dimensions, weight, materials
-- Customer reviews and usage insights
-- Add to cart ecommerce layout
-- Confidence score and warning responses for uncertain queries
+### GitHub Repository
+https://github.com/Rishabh7575/MumzMatch
+
+### 3-Minute Walkthrough Loom
+[Add Loom Link Here]
+
+---
+
+## Core Features
+
+### AI Product Advisor
+
+Users can ask practical questions such as:
+
+- Will this fit Nissan Patrol?
+- Safe for Dubai heat?
+- Good for newborn travel?
+- Cabin friendly for flights?
+- Suitable beside booster seat?
+
+The AI assistant responds using available product specifications, compatibility notes, and safety data.
+
+### Ecommerce Product Experience
+
+- Premium product catalog UI
+- Product detail pages
+- Ratings and reviews
+- Add to cart flow
+- Checkout side cart
+
+### Multilingual Support
+
+- English
+- Arabic
+
+### Smart Response System
+
+- Compatibility badge
+- Confidence score
+- Safety-aware warning logic
+- Product source references
+
+---
+
+## Products Included
+
+- Doona Infant Car Seat & Stroller
+- Chicco NextFit Zip Convertible Car Seat
+- Babyzen YOYO2 Travel Stroller
+- Maxi-Cosi RodiFix Booster Seat
+- Additional curated baby gear items
+
+---
 
 ## Tech Stack
 
-Frontend: React + Tailwind CSS  
-Backend: Node.js + Express  
-AI Layer: OpenRouter API  
-Data: JSON product catalog
+### Frontend
+- React.js
+- Tailwind CSS
 
-## Why This Project
+### Backend
+- Node.js
+- Express.js
 
-Parents often have specific questions before buying baby products. This project reduces confusion and improves trust by turning static product pages into interactive AI-guided experiences.
+### AI Layer
+- OpenRouter API
+- Prompt-engineered structured responses
+
+### Data
+- JSON product catalog
+
+---
+
+## How to Run Locally
+
+### Backend
+
+```bash
+cd backend
+npm install
+npm run dev
