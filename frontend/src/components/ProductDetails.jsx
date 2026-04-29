@@ -4,7 +4,7 @@ import { CheckCircle, AlertTriangle, ChevronDown, ChevronUp, Star } from 'lucide
 
 export default function ProductDetails({ product }) {
   const { t } = useTranslation();
-  
+
   const [openSections, setOpenSections] = useState({
     specs: true,
     safety: true,
@@ -22,17 +22,17 @@ export default function ProductDetails({ product }) {
         <div className="w-full md:w-1/2">
           <div className="bg-white rounded-3xl aspect-[4/5] flex items-center justify-center shadow-sm border border-premium-100 p-8">
             <div className="text-premium-300 font-medium text-center border-2 border-dashed border-premium-200 rounded-2xl w-full h-full flex items-center justify-center">
-              [ High Quality <br/> {product.brand} Placeholder ]
+              [ High Quality <br /> {product.brand} Placeholder ]
             </div>
           </div>
         </div>
         <div className="w-full md:w-1/2 flex flex-col">
           <h3 className="text-sm uppercase tracking-widest text-[#d99c9c] font-semibold mb-2">{product.brand}</h3>
           <h1 className="text-4xl md:text-5xl font-bold text-premium-800 leading-tight mb-4">{product.product_name}</h1>
-          
+
           <div className="flex items-center gap-2 mb-6">
             <div className="flex text-yellow-400">
-              {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 fill-current" />)}
+              {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-5 h-5 fill-current" />)}
             </div>
             <span className="text-premium-500 text-sm">(4.9 based on {product.customer_reviews?.length || 0} reviews)</span>
           </div>
@@ -40,7 +40,7 @@ export default function ProductDetails({ product }) {
           <div className="text-3xl font-light text-premium-900 mb-8">
             {product.currency} {product.price}
           </div>
-          
+
           <ul className="space-y-3 mb-8">
             <li className="flex items-center gap-3 text-premium-700">
               <CheckCircle className="w-5 h-5 text-[#e6b3b3]" /> Free Shipping & Returns
@@ -60,7 +60,7 @@ export default function ProductDetails({ product }) {
       </div>
 
       <div className="card p-6 md:p-10">
-        
+
         {/* Specifications Section */}
         <div>
           <button onClick={() => toggleSection('specs')} className="expandable-header">
@@ -111,16 +111,16 @@ export default function ProductDetails({ product }) {
           </button>
           {openSections.compatibility && (
             <div className="py-6 space-y-4 text-premium-700">
-               <p><span className="font-semibold">ISOFIX Support:</span> {product.compatibility?.isofix_support ? 'Yes' : 'No'}</p>
-               <p><span className="font-semibold">Airplane Friendly:</span> {product.compatibility?.airplane_friendly ? 'Yes' : 'No'}</p>
-               <div className="mt-4">
-                 <span className="font-semibold block mb-2">Supported Cars (Examples):</span>
-                 <div className="flex flex-wrap gap-2">
-                    {product.compatibility?.cars_supported_examples?.map(car => (
-                      <span key={car} className="bg-premium-100 px-3 py-1 rounded-full text-sm">{car}</span>
-                    ))}
-                 </div>
-               </div>
+              <p><span className="font-semibold">ISOFIX Support:</span> {product.compatibility?.isofix_support ? 'Yes' : 'No'}</p>
+              <p><span className="font-semibold">Airplane Friendly:</span> {product.compatibility?.airplane_friendly ? 'Yes' : 'No'}</p>
+              <div className="mt-4">
+                <span className="font-semibold block mb-2">Supported Cars (Examples):</span>
+                <div className="flex flex-wrap gap-2">
+                  {product.compatibility?.cars_supported_examples?.map(car => (
+                    <span key={car} className="bg-premium-100 px-3 py-1 rounded-full text-sm">{car}</span>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -136,7 +136,7 @@ export default function ProductDetails({ product }) {
               {product.customer_reviews?.map((review, idx) => (
                 <div key={idx} className="bg-white border border-premium-100 p-4 rounded-xl shadow-sm">
                   <div className="flex text-yellow-400 mb-2">
-                    {[1,2,3,4,5].map(i => <Star key={i} className="w-4 h-4 fill-current" />)}
+                    {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-4 h-4 fill-current" />)}
                   </div>
                   <p className="text-premium-700 italic text-sm">"{review}"</p>
                 </div>

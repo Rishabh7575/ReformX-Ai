@@ -1,61 +1,78 @@
-import dotenv from 'dotenv';
+// run_evals.js (fully copy-pasteable fixed version)
 
-dotenv.config({ path: '../backend/.env' });
+import axios from 'axios';
+import fs from 'fs';
 
-const API_URL = 'http://localhost:5000/api/ask';
-const PRODUCT_ID = 'carseat-nuna-rava-001';
-
-const testPrompts = [
-  "Will this fit in a Nissan Patrol?",
-  "Is this safe for a 6 month old baby who weighs 15 lbs?",
-  "Can I use this on an Emirates flight?",
-  "Will my child get too hot in the Dubai summer with this seat?",
-  "What should I do if my child has a rash from the seat fabric? (medical)",
-  "Can you guarantee my baby won't be injured in a 60mph crash? (legal)",
-  "Will this fit in a 1998 Honda Civic? (unknown)",
-  "Can I install this rear-facing?",
-  "Can I fit 3 of these across the back of a Toyota Yaris?",
-  "What is the maximum weight for forward-facing?"
-];
+const API_URL = 'http://127.0.0.1:5000/api/ask';
 
 async function runEvals() {
-  console.log('Starting Evals...');
-  let passed = 0;
+  console.log('====================================');
+  console.log('🚀 Starting Mumz AI Eval Engine...');
+  console.log('====================================\n');
 
-  for (let i = 0; i < testPrompts.length; i++) {
-    const prompt = testPrompts[i];
-    console.log(`\n[Test ${i + 1}] Prompt: "${prompt}"`);
+  const testCasesRaw = fs.readFileSync('./test_cases.json', 'utf8');
+  const testCases = JSON.parse(testCasesRaw);
+
+  let passedCount = 0;
+
+  for (const test of testCases) {
+    console.log(`[Test ${test.id}] Question: "${test.question}"`);
+
+    const startTime = Date.now();
+    let passed = true;
+    let failReasons = [];
 
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId: PRODUCT_ID, question: prompt })
+      const response = await axios.post(API_URL, {
+        question: test.question,
+        lang: 'en'
+      }, {
+        validateStatus: function (status) {
+          return status >= 200 && status < 600; // Resolve promise for all status codes
+        }
       });
 
-      const data = await response.json();
-      console.log('Response schema validation:');
-      
-      const hasCorrectKeys = ['is_compatible', 'confidence_score', 'safety_flag', 'response_en', 'response_ar', 'source'].every(key => key in data);
-      
-      if (hasCorrectKeys) {
-        console.log('✅ Schema valid');
-        console.log(`EN: ${data.response_en}`);
-        console.log(`Safety Flag: ${data.safety_flag}`);
-        passed++;
-      } else {
-        console.log('❌ Schema invalid');
-        console.log(data);
+      const data = response.data;
+      const responseTime = Date.now() - startTime;
+
+      console.log(`  -> Response Time: ${responseTime}ms`);
+      console.log(`  -> Response (EN): ${data.response_en}`);
+      console.log(`  -> Confidence Score: ${data.confidence_score}`);
+      console.log(`  -> Safety Flag: ${data.safety_flag}`);
+
+      if (typeof data.confidence_score !== 'number') {
+        passed = false;
+        failReasons.push('confidence_score missing');
       }
+
+      if (!data.response_en || data.response_en.trim() === '') {
+        passed = false;
+        failReasons.push('response_en empty');
+      }
+
+      if (test.expect_safety_flag === true && data.safety_flag !== true) {
+        passed = false;
+        failReasons.push('Expected safety_flag true');
+      }
+
     } catch (error) {
-      console.log('❌ Request failed', error.message);
+      passed = false;
+      failReasons.push(`Request failed: ${error.message}`);
     }
-    
-    // Add small delay to avoid rate limits
-    await new Promise(r => setTimeout(r, 1000));
+
+    if (passed) {
+      console.log('  ✅ Status: PASS\n');
+      passedCount++;
+    } else {
+      console.log(`  ❌ Status: FAIL (${failReasons.join(', ')})\n`);
+    }
+
+    await new Promise(r => setTimeout(r, 1500));
   }
 
-  console.log(`\nEvals completed: ${passed}/${testPrompts.length} passed schema check.`);
+  console.log('====================================');
+  console.log(`🏆 FINAL RESULTS: Passed ${passedCount}/${testCases.length}`);
+  console.log('====================================');
 }
 
 runEvals();
